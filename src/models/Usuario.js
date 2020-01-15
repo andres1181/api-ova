@@ -21,15 +21,23 @@ const UsuarioSchema = new Schema({
     type: String,
     required: true
   },
-  apellidos: {
-    type: String,
-    required: true
-  },
   tipo: {
     type: String,
+    default: 'estudiante',
+    enum: [
+      'estudiante',
+      'docente',
+      'admin'
+    ],
     required: true
   },
-  fecha_registro: { type: Date, default: Date.now }
+  activo: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  fecha_registro: { type: Date, default: Date.now },
+  fecha_ultimo_login: { type: Date, default: Date.now }
 });
 
 UsuarioSchema.methods.encryptContrasena = async (contrasena) => {
@@ -38,7 +46,7 @@ UsuarioSchema.methods.encryptContrasena = async (contrasena) => {
   return hash;
 };
 
-UsuarioSchema.methods.matchPassword = async function (contrasena) {
+UsuarioSchema.methods.validatePassword = async function (contrasena) {
   return await bcrypt.compare(contrasena, this.contrasena);
 };
 
