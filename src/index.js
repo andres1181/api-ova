@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 require('./database');
 const morgan = require('morgan');
+const path = require('path');
 
 //Settings
 app.set('port', process.env.PORT || 3000);
@@ -19,6 +20,11 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({exended: false}));
+
+const history = require('connect-history-api-fallback');
+app.use(history());
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.json());
 app.use(session({
   secret: 'secretapp',
