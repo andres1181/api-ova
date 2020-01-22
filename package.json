@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "start": "babel-node app.js --exec",
+    "dev": "nodemon src/index.js",
+    "devbabel": "nodemon src/index.js --exec babel-node"
+
   },
   "keywords": [],
   "author": "",
@@ -22,9 +25,17 @@
     "mongoose": "^5.7.13",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/node": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/node": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
     "nodemon": "^2.0.1"
   }
 }

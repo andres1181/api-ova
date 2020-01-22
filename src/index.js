@@ -1,12 +1,13 @@
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
+const morgan = require('morgan');
+const path = require('path');
 
 //Initiliazations
 const app = express();
 require('./database');
-const morgan = require('morgan');
-const path = require('path');
+
 
 //Settings
 app.set('port', process.env.PORT || 3000);
@@ -19,7 +20,15 @@ app.set('json spaces', 2);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded({exended: false}));
+app.use(express.urlencoded({exended: true}));
+
+
+// Routes
+app.use('/api/usuarios',require('./routes/usuarios.js'));
+app.use('/api/actividades',require('./routes/actividades.js'));
+app.use('/api/estudiante',require('./routes/estudiante.js'));
+app.use('/api/administrador',require('./routes/administrador.js'));
+
 
 const history = require('connect-history-api-fallback');
 app.use(history());
@@ -36,11 +45,6 @@ app.use(session({
 // Global variables
 
 
-// Routes
-app.use('/api/usuarios',require('./routes/usuarios.js'));
-app.use('/api/actividades',require('./routes/actividades.js'));
-app.use('/api/estudiante',require('./routes/estudiante.js'));
-app.use('/api/administrador',require('./routes/administrador.js'));
 
 
 
