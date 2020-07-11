@@ -171,6 +171,7 @@ router.post('/login', async (req, res, next) => {
     const { codigo, contrasena} = req.body;
 
     const usuario = await Usuario.findOne({codigo: codigo});
+    console.log(usuario);
     if (!usuario) {
       return res.status(404).send('El usuario con el código no existe');
     }

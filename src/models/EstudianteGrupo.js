@@ -11,10 +11,10 @@ const GrupoEstudianteSchema = new Schema({
     required: true
   },
   id_estudiante: {
-    type: Schema.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Usuario",
     required: true
   }
 });
 
-module.exports = mongoose.model('GrupoEstudiante', GrupoEstudianteSchema)
+module.exports = mongoose.model('EstudianteGrupo', GrupoEstudianteSchema)

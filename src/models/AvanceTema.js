@@ -14,19 +14,23 @@ const { Schema } = mongoose;
 // });
 
 const AvanceTemaSchema = new Schema({
-  terminado: {
-    type: Boolean,
-    required: true,
-    default: false
-  },
-  id_estudiante: {
-    type: Schema.Types.ObjectId,
-    ref: "Usuario",
+  unidad: {
+    type: String,
     required: true
   },
-  id_tema: {
+  tema: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  fallos: {
+    type: Number,
+    required: false,
+    default: 0
+  },
+  id_grupo: {
     type: Schema.Types.ObjectId,
-    ref: "Tema",
+    ref: "Grupo",
     required: true
   }
 });

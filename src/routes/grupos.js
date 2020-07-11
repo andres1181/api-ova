@@ -1,4 +1,6 @@
-const { Router } = require('express');
+const {
+  Router
+} = require('express');
 const router = Router();
 const jwt = require('jsonwebtoken');
 
@@ -19,12 +21,14 @@ router.get('/obtener/grupos', async (req, res) => {
     })
   }
 });
-
-router.get('/obtener/grupo/:id', async (req, res) => {
-  const _id = req.params.id;
+//Obtener los grupos de un profesor - parametro id del docente
+router.get('/obtenerGrupos/:docente', async (req, res) => {
+  const _docente = req.params.docente;
   try {
-    const nuevoUsuario = await Grupo.findOne({_id});
-    res.json(nuevoUsuario);
+    const grupos = await Grupo.find({
+      cod_docente: _docente
+    });
+    res.status(200).json(grupos);
 
   } catch (error) {
     return res.status(400).json({
@@ -33,7 +37,7 @@ router.get('/obtener/grupo/:id', async (req, res) => {
     })
   }
 });
-
+/*
 router.get('/obtener/integrantes', async (req, res) => {
   try {
     const estudiantes = await EstudianteGrupo.find();
@@ -44,50 +48,101 @@ router.get('/obtener/integrantes', async (req, res) => {
       error
     })
   }
-});
+});*/
+//el administrador crea grupos
+router.post('/crearGrupo', async (req, res) => {
+  let errores = [];
 
-router.post('/crear/grupo', async (req, res) => {
+  const {
+    nombre,
+    codigo,
+    cod_docente,
+    activo
+  } = req.body
+  if (!nombre) {
+    errores.push({
+      text: 'Nombre requerido'
+    });
+  }
+  if (!codigo) {
+    errores.push({
+      text: 'Código Requerido'
+    });
+  }
+  if (!cod_docente) {
+    errores.push({
+      text: 'Código docente requerido'
+    });
+  }
 
   try {
-    let errores = [];
 
-    const {nombre, activo} = req.body
-    // const emailUser = await AvanceUnidad.findOne({email: email}); //encuantra un email que coincida
-    // const codigoUser = await AvanceUnidad.findOne({codigo: codigo});
-    if (!nombre) {
-      errores.push({text: 'Todos los datos son necesarios'});
-    }
     if (errores.length > 0) {
-       res.status(400).json({mensaje: 'Ocurrio un error', errores});
-     }else {
-       const nuevoGrupo = new Grupo({activo, nombre});
-       await nuevoGrupo.save();
-       res.status(201).json({mensaje: 'Grupo creado'});}
+      res.status(400).json({
+        mensaje: 'Ocurrio un error',
+        errores: errores
+      });
+    } else {
+      const nuevoGrupo = new Grupo({
+        codigo,
+        cod_docente,
+        activo,
+        nombre
+      });
+      await nuevoGrupo.save();
+      res.status(200).json({
+        mensaje: 'Grupo creado',
+        grupo: nuevoGrupo
+      });
+    }
 
   } catch (e) {
+    res.status(500).json({
+      error: e
+    });
     console.log(e);
   }
 
 });
+
+//Ingreso el codigo del grupo como un paramentro, con esa informacion selecciono el id del grupo y lo agrego
+//como en la interfaz muestro una lista de los grupos, cada grupo ya tiene el id
 router.post('/agregarEstudiante', async (req, res) => {
+  let errores = [];
 
+  const {
+    id_grupo,
+    id_estudiante
+  } = req.body
+
+  if (!id_grupo || !id_estudiante) {
+    errores.push({
+      text: 'Todos los datos son necesarios'
+    });
+  }
   try {
-    let errores = [];
 
-    const {id_grupo, id_estudiante} = req.body
-    // const emailUser = await AvanceUnidad.findOne({email: email}); //encuantra un email que coincida
-    // const codigoUser = await AvanceUnidad.findOne({codigo: codigo});
-    if (!id_grupo || !id_estudiante) {
-      errores.push({text: 'Todos los datos son necesarios'});
-    }
     if (errores.length > 0) {
-       res.status(400).json({mensaje: 'Ocurrio un error', errores});
-     }else {
-       const nuevoGrupo = new Grupo({id_grupo, id_estudiante});
-       await nuevoGrupo.save();
-       res.status(201).json({mensaje: 'Estudiante Agregado'});}
+      res.status(400).json({
+        mensaje: 'Ocurrio un error',
+        errores: errores
+      });
+    } else {
+      const estudianteGrupo = new EstudianteGrupo({
+        id_grupo,
+        id_estudiante
+      });
+      await estudianteGrupo.save();
+      res.status(200).json({
+        mensaje: 'Estudiante Agregado',
+        datos: estudianteGrupo
+      });
+    }
 
   } catch (e) {
+    res.status(500).json({
+      error: e
+    });
     console.log(e);
   }
 
@@ -195,13 +250,15 @@ router.post('/agregarEstudiante', async (req, res) => {
 //     })
 //   }
 // });
-router.delete('/delete/grupo/:id',  async (req, res) => {//verifyToken,
+router.delete('/delete/grupo/:id', async (req, res) => { //verifyToken,
 
 
   try {
     const _id = req.params.id;
-    const deleteGrupo =  await Grupo.findByIdAndDelete({_id});
-    if(!deleteGrupo){
+    const deleteGrupo = await Grupo.findByIdAndDelete({
+      _id
+    });
+    if (!deleteGrupo) {
       return res.status(400).json({
         mensaje: 'El grupo NO existe',
         error

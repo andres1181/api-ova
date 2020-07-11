@@ -28,6 +28,7 @@ app.use('/api/usuarios',require('./routes/usuarios.js'));
 app.use('/api/actividades',require('./routes/actividades.js'));
 app.use('/api/estudiante',require('./routes/estudiante.js'));
 app.use('/api/administrador',require('./routes/administrador.js'));
+app.use('/api/grupos',require('./routes/grupos.js'));
 
 
 const history = require('connect-history-api-fallback');

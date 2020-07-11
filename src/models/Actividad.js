@@ -15,20 +15,31 @@ const PreguntaSchema = new Schema({
     type: String,
     required: true
   },
+  unidad: {
+    type: String,
+    required: true
+  },
+  tema: {
+    type: String,
+    required: true
+  },
   tipo: {
     type: String,
     enum: [
       'falsoVerdadero',
-      'evaluacion',
-      'multiple'
+      'analizarCodigo',
+      'multiple',
+      'ordenar',
+      'analizarProblema'
     ],
     required: true
   },
-  id_tema: {
+  //opciones -> objeto
+  /*id_tema: {
     type: Schema.Types.ObjectId,
     ref: "Tema",
     required: true
-  },
+  },*/
   activo: {
     type: Boolean,
     required: true,
@@ -37,6 +48,10 @@ const PreguntaSchema = new Schema({
   autor: {
     type: Schema.Types.ObjectId,
     ref: "Usuario",
+    required: true
+  },
+  opciones: {
+    type: Schema.Types.Mixed,
     required: true
   },
   fecha_creacion: {
