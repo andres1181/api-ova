@@ -7,6 +7,11 @@ const UnidadSchema = new Schema({
     required: true,
     unique: true
   },
+  componente: {
+    type: String,
+    required: true,
+    unique: true
+  },
   activo: {
     type: Boolean,
     required: true,

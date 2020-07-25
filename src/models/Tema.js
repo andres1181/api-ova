@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 
 const TemaSchema = new Schema({
-  titulo: {
+  nombre: {
     type: String,
     required: true,
     unique: true
@@ -21,7 +21,7 @@ const TemaSchema = new Schema({
   activo: {
     type: Boolean,
     required: true,
-    default: false,
+    default: true,
   },
   fecha_creacion: {
     type: Date,

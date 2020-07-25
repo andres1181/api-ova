@@ -13,31 +13,22 @@ const { Schema } = mongoose;
 //     autor: { type: Schema.ObjectId, ref: "Autor" }
 // });
 
-const AvanceTemaSchema = new Schema({
-  unidad: {
-    type: String,
-    required: true
-  },
+const AvanceTemaEstudianteSchema = new Schema({
+
   id_tema: {
     type: Schema.Types.ObjectId,
-    ref: "Grupo",
+    ref: "Tema",
     required: true
   },
-  intentos: {
-    type: Number,
-    required: false,
-    default: 0
+  aprobado: {
+    type: Boolean,
+    required: false
   },
-  fallos: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  id_grupo: {
+  id_estudiante: {
     type: Schema.Types.ObjectId,
-    ref: "Grupo",
+    ref: "Usuario",
     required: true
   }
 });
 
-module.exports = mongoose.model('AvanceTema', AvanceTemaSchema)
+module.exports = mongoose.model('AvanceTemaEstudiante', AvanceTemaEstudianteSchema)

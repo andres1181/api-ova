@@ -5,7 +5,7 @@ const router = Router();
 const jwt = require('jsonwebtoken');
 
 const AvanceTema = require('../models/AvanceTema');
-const AvanceUnidad = require('../models/AvanceUnidad');
+const AvanceTemaEstudiante = require('../models/AvanceTemaEstudiante');
 const config = require('../config/config');
 const verifyToken = require('../controlers/verifyToken');
 
@@ -13,7 +13,7 @@ const verifyToken = require('../controlers/verifyToken');
 router.get('/avance/tema', async (req, res) => {
   //en el frontend se debera buscar los avances que coincidan con el _id del estudiante
   try {
-    const avance = await AvanceTema.find().populate('id_tema');
+    const avance = await AvanceTemaEstudiante.find().populate('id_tema');
     res.status(200).json(avance);
   } catch (error) {
     return res.status(400).json({
@@ -22,111 +22,65 @@ router.get('/avance/tema', async (req, res) => {
     })
   }
 });
-/*
-router.get('/avance/unidad', async (req, res) => {
+
+router.get('/listarAvances/tema/:estudiante', async (req, res) => {
+  //en el frontend se debera buscar los avances que coincidan con el _id del estudiante
+  const _estudiante = req.params.estudiante;
   try {
-    const avance = await AvanceUnidad.find();
+    const avance = await AvanceTemaEstudiante.find({
+      id_estudiante: _estudiante
+    }).populate('id_tema');
     res.status(200).json(avance);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Error en el servidor',
+      error: error
+    })
+  }
+});
+router.get('/listarAvances/tema', async (req, res) => {
+  //en el frontend se debera buscar los avances que coincidan con el _id del estudiante
+
+  try {
+    const avances = await AvanceTemaEstudiante.find().populate('id_tema');
+    res.status(200).json(avances);
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',
       error: error
     })
   }
-});*/
+});
 
-//get con parametros
-// router.get('/find/avance/tema/:id', async (req, res) => {
-//   const id_estudiante = req.params.id;
-//   //se encuentran todos los avaces del estudiante, luego en el frontend se seleccionan los del respectivo tema
-//   //en el frontend se envia como prop al iniciar Sesión
-//   try {
-//     const avance = await AvanceTema.find('id_estudiante');
-//     res.json(avance);
-//
-//   } catch (error) {
-//     return res.status(400).json({
-//       mensaje: 'Ocurrio un error',
-//       error
-//     })
-//   }
-// });
-
-//
-//
-/*
-router.post('/avance/unidad', async (req, res) => {
-
-  try {
-    let errores = [];
-
-    const {
-      avance,
-      id_estudiante,
-      id_unidad
-    } = req.body
-    // const emailUser = await AvanceUnidad.findOne({email: email}); //encuantra un email que coincida
-    // const codigoUser = await AvanceUnidad.findOne({codigo: codigo});
-    if (!avance || !id_estudiante || !id_unidad) {
-      errores.push({
-        text: 'Todos los datos son necesarios'
-      });
-    }
-    if (errores.length > 0) {
-      res.status(400).json({
-        mensaje: 'Ocurrio un error',
-        errores
-      });
-    } else {
-      const nuevoAvance = new AvanceUnidad({
-        avance,
-        id_estudiante,
-        id_unidad
-      });
-      await nuevoAvance.save();
-      res.status(201).json({
-        mensaje: 'Avance creado'
-      });
-    }
-
-  } catch (e) {
-    console.log(e);
-  }
-
-});*/
 
 //Crear por parte del administrador cuando se crea un grupo, un documento donde se almacena la cantidad de fallos por cada tema
-router.post('/avanceTema/crear',  async (req, res) => {
+router.post('/avanceTema/crear', async (req, res) => {
   const {
-    unidad,
-    tema,
-    id_grupo
+    id_estudiante,
+    id_tema,
+    aprobado
   } = req.body
   let errores = [];
-  if (!unidad) {
+  if (!id_estudiante) {
     errores.push({
-      text: 'Requiere una unidad'
+      text: 'Requiere un id de estudiante'
     });
   }
-  if (!tema) {
+  if (!id_tema) {
     errores.push({
-      text: 'Requiere un Tema'
+      text: 'Requiere un id de estudiante'
     });
   }
-  if (!id_grupo) {
-    errores.push({
-      text: 'Requiere un grupo'
-    });
-  }
+
   if (errores.length > 0) {
     res.status(500).json({
       errores: errores
     });
   } else {
-    const nuevoAvance = new AvanceTema({
-      unidad,
-      tema,
-      id_grupo
+    const nuevoAvance = new AvanceTemaEstudiante({
+      id_estudiante,
+      id_tema,
+      aprobado
     });
     await nuevoAvance.save();
     res.status(200).json(nuevoAvance);
@@ -134,12 +88,58 @@ router.post('/avanceTema/crear',  async (req, res) => {
 
 });
 //Actualizar el numero de fallos
-router.put('/avanceTema/actualizar/:tema',  async (req, res) => {
+// router.put('/avanceTema/actualizar/:tema', async (req, res) => {
+//   const body = req.body;
+//   const _tema = req.params.tema; //id del avance
+//   try {
+//     const updateAvance = await AvanceTemaEstudiante.findOneAndUpdate({
+//         tema: _tema
+//       },
+//       body, {
+//         new: true
+//       });
+//     res.status(200).json(updateAvance);
+//
+//   } catch (e) {
+//     return res.status(500).json({
+//       mensaje: 'Ocurrio un error',
+//       error: e
+//     })
+//   }
+// });
+
+//Actualizar el numero de fallos por id del grupo e id tema
+// router.put('/avanceTema/actualizar/:tema/:grupo', async (req, res) => {
+//   const body = req.body;
+//   const _tema = req.params.tema;
+//   const _grupo = req.params.grupo;
+//   try {
+//     const updateAvance = await AvanceTemaEstudiante.findOneAndUpdate({
+//         id_tema: _tema,
+//         id_grupo: _grupo
+//       },
+//       body, {
+//         new: true
+//       });
+//     res.status(200).json(updateAvance);
+//
+//   } catch (e) {
+//     return res.status(500).json({
+//       mensaje: 'Ocurrio un error',
+//       error: e
+//     })
+//   }
+// });
+
+
+router.put('/avanceTema/actualizar/:id', async (req, res) => {
   const body = req.body;
-  const _tema = req.params.tema; //id del avance
+  const id_ = req.params.id;
+    console.log('Avance actualizar');
+  console.log(req.params.id);
   try {
-    const updateAvance = await AvanceTema.findOneAndUpdate({
-        tema: _tema
+    const updateAvance = await AvanceTemaEstudiante.findOneAndUpdate({
+        _id: id_
       },
       body, {
         new: true
@@ -154,27 +154,5 @@ router.put('/avanceTema/actualizar/:tema',  async (req, res) => {
   }
 });
 
-//Dos apis para la realimentacion de los fallos para los estudiantes de manera individual
-
-/*
-router.put('/avance/update/unidad/:id', verifyToken, async (req, res) => {
-const body = req.body;
-const _id = req.params.id;//id del avance
-  try {
-
-  const updateAvance =  await AvanceUnidad.findByIdAndUpdate(
-      _id,
-      body,
-      { new: true});
-      res.status(201).json(updateAvance);
-
-  } catch (error) {
-    return res.status(400).json({
-      mensaje: 'Ocurrio un error',
-      error
-    })
-  }
-});
-*/
 
 module.exports = router;

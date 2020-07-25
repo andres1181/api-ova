@@ -27,9 +27,14 @@ const UsuarioSchema = new Schema({
     enum: [
       'estudiante',
       'docente',
-      'admin'
+      'administrador'
     ],
     required: true
+  },
+  id_grupo: {
+    type: Schema.Types.ObjectId,
+    ref: "Grupo",
+    required: false
   },
   activo: {
     type: Boolean,

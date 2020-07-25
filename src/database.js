@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 
-mongoose.connect('mongodb://localhost/poo-db',{
+mongoose.connect('mongodb://localhost/poo_db',{
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,

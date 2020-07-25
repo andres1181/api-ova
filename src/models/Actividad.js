@@ -15,12 +15,14 @@ const PreguntaSchema = new Schema({
     type: String,
     required: true
   },
-  unidad: {
-    type: String,
+  id_unidad: {
+    type: Schema.Types.ObjectId,
+    ref: "Unidad",
     required: true
   },
-  tema: {
-    type: String,
+  id_tema: {
+    type: Schema.Types.ObjectId,
+    ref: "Tema",
     required: true
   },
   tipo: {
@@ -34,12 +36,6 @@ const PreguntaSchema = new Schema({
     ],
     required: true
   },
-  //opciones -> objeto
-  /*id_tema: {
-    type: Schema.Types.ObjectId,
-    ref: "Tema",
-    required: true
-  },*/
   activo: {
     type: Boolean,
     required: true,

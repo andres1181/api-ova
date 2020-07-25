@@ -13,8 +13,9 @@ const GrupoSchema = new Schema({
     required: true,
     unique: true
   },
-  cod_docente: {
-    type: String,
+  id_docente: {
+    type: Schema.Types.ObjectId,
+    ref: "Usuario",
     required: true
   },
   activo: {

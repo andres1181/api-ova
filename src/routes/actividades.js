@@ -37,13 +37,32 @@ router.get('/obtenerAct/:id', verifyToken, async (req, res) => {
   }
 });
 
-router.get('/obtenerPorUnidad/:unidad', async (req, res) => {
+router.get('/obtenerPorTema/:tema', async (req, res) => {
   console.log(req.params);
-  const _unidad = req.params.unidad;
+  const unidad_id = req.params.unidad;
   try {
 
     const lista = await Actividad.find({
-      unidad: _unidad
+      id_unidad: unidad_id
+    }).populate('id_tema');
+    res.json(lista);
+
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+
+      error
+    })
+  }
+});
+router.get('/obtenerPorUnidad/:unidad', async (req, res) => {
+  console.log(req.params);
+  const unidad_id = req.params.unidad;
+  try {
+
+    const lista = await Actividad.find({
+      id_unidad: unidad_id
     }).populate('id_tema');
     res.json(lista);
 
@@ -57,13 +76,16 @@ router.get('/obtenerPorUnidad/:unidad', async (req, res) => {
   }
 });
 
+
+
+
 router.post('/crear', verifyToken, async (req, res) => {
   const {
     enunciado,
     tipo,
-    unidad,
     autor,
-    tema,
+    id_tema,
+    id_unidad,
     opciones,
     activo
   } = req.body
@@ -73,7 +95,7 @@ router.post('/crear', verifyToken, async (req, res) => {
       text: 'Requiere un enunciado'
     });
   }
-  if (!tema) {
+  if (!id_tema) {
     errores.push({
       text: 'Requiere un Tema'
     });
@@ -93,11 +115,13 @@ router.post('/crear', verifyToken, async (req, res) => {
       text: 'Falta el autor'
     });
   }
-  if (!unidad) {
+  if (!id_unidad) {
     errores.push({
-      text: 'Falta la unidad'
+      text: 'Falta el id_unidad'
     });
   }
+
+
   try {
     if (errores.length > 0) {
       res.status(400).json({
@@ -108,9 +132,9 @@ router.post('/crear', verifyToken, async (req, res) => {
       const nuevaActividad = new Actividad({
         enunciado,
         tipo,
-        unidad,
         autor,
-        tema,
+        id_tema,
+        id_unidad,
         opciones,
         activo
       });
