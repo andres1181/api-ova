@@ -17,7 +17,7 @@ app.set('json spaces', 2);
 
 //Middlewares
 
-app.use(morgan('dev'));
+app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({exended: true}));

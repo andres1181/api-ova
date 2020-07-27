@@ -4,9 +4,10 @@ const {
 const router = Router();
 
 const Actividad = require('../models/Actividad');
+const Juez = require('../models/Juez');
 const verifyToken = require('../controlers/verifyToken')
 //routes
-router.get('/listarAct', verifyToken, async (req, res) => {
+router.get('/listarAct',  async (req, res) => {
   try {
     const actividades = await Actividad.find().populate('id_tema');
     res.json(actividades);
@@ -19,7 +20,7 @@ router.get('/listarAct', verifyToken, async (req, res) => {
 });
 
 //get con parametros
-router.get('/obtenerAct/:id', verifyToken, async (req, res) => {
+router.get('/obtenerAct/:id', async (req, res) => {
   console.log(req.params);
   const _id = req.params.id;
   try {
@@ -79,7 +80,7 @@ router.get('/obtenerPorUnidad/:unidad', async (req, res) => {
 
 
 
-router.post('/crear', verifyToken, async (req, res) => {
+router.post('/crear',  async (req, res) => {
   const {
     enunciado,
     tipo,
@@ -151,6 +152,95 @@ router.post('/crear', verifyToken, async (req, res) => {
   }
 });
 
+router.post('/crear/Juez', async (req, res) => {
+  const {
+    enunciado,
+    autor,
+    id_unidad,
+    respuesta,
+    activo
+  } = req.body
+  let errores = [];
+  if (!enunciado) {
+    errores.push({
+      text: 'Requiere un enunciado'
+    });
+  }
+  if (!respuesta) {
+    errores.push({
+      text: 'Requiere una respuesta esperada'
+    });
+  }
+  if (!autor) {
+    errores.push({
+      text: 'Falta el autor'
+    });
+  }
+  if (!id_unidad) {
+    errores.push({
+      text: 'Falta el id_unidad'
+    });
+  }
+  try {
+    if (errores.length > 0) {
+      res.status(400).json({
+        mensaje: 'Ocurrio un error',
+        errores: errores
+      });
+    } else {
+      const nuevoJuez = new Juez({
+        enunciado,
+        autor,
+        id_unidad,
+        respuesta,
+        activo
+      });
+      await nuevoJuez.save();
+      res.status(200).json(nuevoJuez);
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      mensaje: 'Ocurrio un error',
+
+      error: error
+    })
+  }
+});
+
+router.get('/listar/Juez', async (req, res) => {
+  try {
+    const jueces = await Juez.find().populate('id_unidad');
+    res.status(200).json(jueces);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
+
+router.get('/obtener/juez/:unidad', async (req, res) => {
+  console.log(req.params);
+  const unidad_id = req.params.unidad;
+  try {
+
+    const lista = await Juez.find({
+      id_unidad: unidad_id
+    }).populate('id_unidad');
+    res.json(lista);
+
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+
+      error
+    })
+  }
+});
+
+
 router.put('/updateActividad/:id', async (req, res) => {
   //  const { codigo, contrasena, email, nombres, apellidos, tipo} = req.body;
   const body = req.body;
@@ -171,6 +261,7 @@ router.put('/updateActividad/:id', async (req, res) => {
     })
   }
 });
+
 
 router.delete('/deleteActividad/:id', async (req, res) => {
 
