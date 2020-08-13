@@ -215,9 +215,7 @@ router.post('/login', async (req, res, next) => {
   try {
 
     const {
-      codigo,
-      contrasena
-    } = req.body;
+      codigo,    contrasena   } = req.body;
 
     const usuario = await Usuario.findOne({
       codigo: codigo
@@ -235,14 +233,13 @@ router.post('/login', async (req, res, next) => {
       });
 
     }
-
     const token = await jwt.sign({
         id: usuario._id,
         tipo: usuario.tipo,
         codigo: usuario.codigo,
         email: usuario.email,
         nombres: usuario.nombres,
-        grupo: usuario.id_grupo
+        grupo: usuario.id_grupo //Si es estudiante
 
       },
       config.secret, {

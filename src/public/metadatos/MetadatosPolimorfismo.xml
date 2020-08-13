@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<lom xmlns="http://ltsc.ieee.org/xsd/LOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd">
+<general><identifier>
+<catalog>5f1f908d78cd0d0017ae0f76</catalog>
+</identifier>
+<title><string language="es">Polimorfismo</string>
+</title>
+<language>es</language>
+<description><string language="es">El objetivo del objeto es comprender el concepto de polimorfismo y su uso en la construcción de algoritmos.</string>
+</description>
+<keyword><string language="es">Programación, Herencia, Sobrecarga, Código.</string>
+</keyword>
+<coverage><string language="es">Universitario</string>
+</coverage>
+<structure><source>LOMv1.0</source>
+<value>linear</value></structure>
+</general>
+<lifeCycle><version><string>1.0</string>
+</version>
+<status><source>LOMv1.0</source>
+<value>draft</value></status>
+<contribute>
+<role><source>LOMv1.0</source>
+<value>author</value></role>
+<entity>
+<![CDATA[BEGIN:VCARD
+VERSION:3.0
+N:Arana Lozano;Andrés Felipe;;;
+FN:Andrés Felipe Arana Lozano
+EMAIL;TYPE=INTERNET:andres.arana@correounivalle.edu.co
+ORG:UNIVALLE
+END:VCARD]]></entity>
+<date><dateTime>2020-07-05</dateTime>
+</date>
+</contribute>
+</lifeCycle>
+<metaMetadata><contribute>
+<role><source>LOMv1.0</source>
+<value>creator</value></role>
+<entity>
+<![CDATA[BEGIN:VCARD
+VERSION:3.0
+N:Arana Lozano;Andrés Felipe;;;
+FN:Andrés Felipe Arana Lozano
+EMAIL;TYPE=INTERNET:andres.arana@correounivalle.edu.co
+ORG:UNIVALLE
+END:VCARD]]></entity>
+<date><dateTime>2020-07-05</dateTime>
+</date>
+</contribute>
+<language>es</language>
+</metaMetadata>
+<technical><format>text/html</format>
+<location>https://ovacpp.herokuapp.com/estudiante/unidades/polimorfismo</location>
+<requirement>
+<orComposite>
+<type><source>LOMv1.0</source>
+<value>browser</value>
+</type>
+<name><source>LOMv1.0</source>
+<value>any</value>
+</name>
+</orComposite>
+</requirement>
+<installationRemarks><string language="es">Objeto desarrollado con los frameworks VUEJS y NodeJS</string>
+</installationRemarks>
+<otherPlatformRequirements><string language="es">Google Chrome
+Firefox</string>
+</otherPlatformRequirements>
+</technical>
+<educational><interactivityType><source>LOMv1.0</source>
+<value>mixed</value></interactivityType>
+<learningResourceType><source>LOMv1.0</source>
+<value>problem statement</value></learningResourceType>
+<interactivityLevel><source>LOMv1.0</source>
+<value>medium</value></interactivityLevel>
+<semanticDensity><source>LOMv1.0</source>
+<value>medium</value></semanticDensity>
+<intendedEndUserRole><source>LOMv1.0</source>
+<value>learner</value></intendedEndUserRole>
+<context><source>LOMv1.0</source>
+<value>other</value></context>
+<typicalAgeRange><string language="es">17-25</string>
+</typicalAgeRange>
+<difficulty><source>LOMv1.0</source>
+<value>medium</value></difficulty>
+<description><string>El objeto esta dirigido a estudiantes de segundo semestre de Ingenieria de Sistemas de la Universidad del Valle sede Tuluá</string>
+</description>
+<language>es</language>
+</educational>
+<rights><cost><source>LOMv1.0</source>
+<value>no</value></cost>
+<copyrightAndOtherRestrictions><source>LOMv1.0</source>
+<value>no</value></copyrightAndOtherRestrictions>
+</rights>
+<classification><purpose><source>LOMv1.0</source>
+<value>idea</value></purpose>
+</classification>
+</lom>
